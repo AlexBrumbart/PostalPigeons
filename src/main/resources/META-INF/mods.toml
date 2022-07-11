@@ -1,0 +1,33 @@
+modLoader="javafml"
+loaderVersion="[41,)"
+
+license="All rights reserved"
+#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
+
+
+[[mods]]
+modId="postalpigeons"
+version="${file.jarVersion}"
+displayName="Postal Pigeons" #mandatory
+#updateJSONURL="https://change.me.example.invalid/updates.json"
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/"
+#logoFile="examplemod.png"
+credits="Thanks to the Forge Team for making Forge to what it is."
+authors="AlexBrumbart"
+description='''
+A mod about pigeons to transport items from one spot to another.
+Made for the 2022 ForgeJam.
+'''
+
+[[dependencies.postalpigeons]]
+    modId="forge"
+    mandatory=true
+    versionRange="[41,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.postalpigeons]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19,1.20)"
+    ordering="NONE"
+    side="BOTH"
