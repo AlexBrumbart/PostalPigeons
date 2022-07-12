@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "postalpigeons:block/mail_receptor"
+    }
+  }
+}
