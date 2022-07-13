@@ -22,6 +22,10 @@ public class MailReceptorStorage extends SavedData {
         setDirty();
     }
 
+    public boolean hasEntry(String name) {
+        return positions.containsKey(name);
+    }
+
     public Set<Map.Entry<String, BlockPos>> getEntries() {
         return positions.entrySet();
     }
