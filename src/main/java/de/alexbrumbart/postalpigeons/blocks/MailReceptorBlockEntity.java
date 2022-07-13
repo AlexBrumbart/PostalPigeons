@@ -9,13 +9,20 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler inventory = new ItemStackHandler(18);
+    private final ItemStackHandler inventory = new ItemStackHandler(18) { // TODO Integration mit Hoppern und Redstone
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            MailReceptorBlockEntity.this.setChanged();
+        }
+    };
     private String name = "";
 
     public MailReceptorBlockEntity(BlockPos pos, BlockState state) {
@@ -47,9 +54,8 @@ public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        // TODO: Container und GUI für Block.
-        return null;
+    public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+        return new MailReceptorContainer(containerId, playerInventory, inventory, ContainerLevelAccess.create(level, worldPosition));
     }
 
     @Override
