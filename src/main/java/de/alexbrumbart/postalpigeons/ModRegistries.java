@@ -3,7 +3,11 @@ package de.alexbrumbart.postalpigeons;
 import de.alexbrumbart.postalpigeons.blocks.MailReceptorBlock;
 import de.alexbrumbart.postalpigeons.blocks.MailReceptorBlockEntity;
 import de.alexbrumbart.postalpigeons.blocks.MailReceptorContainer;
+import de.alexbrumbart.postalpigeons.blocks.PigeonCoopBlock;
+import de.alexbrumbart.postalpigeons.blocks.PigeonCoopBlockEntity;
+import de.alexbrumbart.postalpigeons.blocks.PigeonCoopContainer;
 import de.alexbrumbart.postalpigeons.rendering.MailReceptorScreen;
+import de.alexbrumbart.postalpigeons.rendering.PigeonCoopScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -44,7 +48,14 @@ public class ModRegistries {
     public static final RegistryObject<Item> MAIL_RECEPTOR_BI = ITEMS.register("mail_receptor", () -> new BlockItem(MAIL_RECEPTOR.get(), new Item.Properties().tab(TAB)));
     public static final RegistryObject<MenuType<MailReceptorContainer>> MAIL_RECEPTOR_MENU = MENUS.register("mail_receptor", () -> new MenuType<>(MailReceptorContainer::new));
 
+    // Pigeon Coop
+    public static final RegistryObject<Block> PIGEON_COOP = BLOCKS.register("pigeon_coop", () -> new PigeonCoopBlock(BlockBehaviour.Properties.of(Material.STONE)));
+    public static final RegistryObject<BlockEntityType<?>> PIGEON_COOP_TE = TILES.register("pigeon_coop", () -> BlockEntityType.Builder.of(PigeonCoopBlockEntity::new, PIGEON_COOP.get()).build(null));
+    public static final RegistryObject<Item> PIGEON_COOP_BI = ITEMS.register("pigeon_coop", () -> new BlockItem(PIGEON_COOP.get(), new Item.Properties().tab(TAB)));
+    public static final RegistryObject<MenuType<PigeonCoopContainer>> PIGEON_COOP_MENU = MENUS.register("pigeon_coop", () -> new MenuType<>(PigeonCoopContainer::new));
+
     public static void registerContainerScreens() {
         MenuScreens.register(MAIL_RECEPTOR_MENU.get(), MailReceptorScreen::new);
+        MenuScreens.register(PIGEON_COOP_MENU.get(), PigeonCoopScreen::new);
     }
 }
