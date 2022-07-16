@@ -17,9 +17,10 @@ public class PostalPigeons {
         modEventBus.addListener(this::clientSetup);
 
         ModRegistries.BLOCKS.register(modEventBus);
-        ModRegistries.TILES.register(modEventBus);
         ModRegistries.ITEMS.register(modEventBus);
+        ModRegistries.TILES.register(modEventBus);
         ModRegistries.MENUS.register(modEventBus);
+        ModRegistries.ENTITIES.register(modEventBus);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

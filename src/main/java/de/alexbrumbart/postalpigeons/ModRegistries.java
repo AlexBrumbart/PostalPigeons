@@ -6,9 +6,12 @@ import de.alexbrumbart.postalpigeons.blocks.MailReceptorContainer;
 import de.alexbrumbart.postalpigeons.blocks.PigeonCoopBlock;
 import de.alexbrumbart.postalpigeons.blocks.PigeonCoopBlockEntity;
 import de.alexbrumbart.postalpigeons.blocks.PigeonCoopContainer;
+import de.alexbrumbart.postalpigeons.entity.Pigeon;
 import de.alexbrumbart.postalpigeons.rendering.MailReceptorScreen;
 import de.alexbrumbart.postalpigeons.rendering.PigeonCoopScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -29,9 +33,10 @@ public class ModRegistries {
     }
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PostalPigeons.ID);
-    public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, PostalPigeons.ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, PostalPigeons.ID);
+    public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, PostalPigeons.ID);
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, PostalPigeons.ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, PostalPigeons.ID);
 
     private static final CreativeModeTab TAB = new CreativeModeTab(PostalPigeons.ID) {
 
@@ -53,6 +58,10 @@ public class ModRegistries {
     public static final RegistryObject<BlockEntityType<?>> PIGEON_COOP_TE = TILES.register("pigeon_coop", () -> BlockEntityType.Builder.of(PigeonCoopBlockEntity::new, PIGEON_COOP.get()).build(null));
     public static final RegistryObject<Item> PIGEON_COOP_BI = ITEMS.register("pigeon_coop", () -> new BlockItem(PIGEON_COOP.get(), new Item.Properties().tab(TAB)));
     public static final RegistryObject<MenuType<PigeonCoopContainer>> PIGEON_COOP_MENU = MENUS.register("pigeon_coop", () -> new MenuType<>(PigeonCoopContainer::new));
+
+    // Pigeon
+    public static final RegistryObject<EntityType<Pigeon>> PIGEON = ENTITIES.register("pigeon", () -> EntityType.Builder.of(Pigeon::new, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10).build("pigeon"));
+    public static final RegistryObject<Item> PIGEON_SPAWN_EGG = ITEMS.register("pigeon_spawn_egg", () -> new ForgeSpawnEggItem(PIGEON, 0xff0000, 0x00ff00, new Item.Properties().tab(TAB)));
 
     public static void registerContainerScreens() {
         MenuScreens.register(MAIL_RECEPTOR_MENU.get(), MailReceptorScreen::new);
