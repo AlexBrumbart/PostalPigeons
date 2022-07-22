@@ -30,7 +30,7 @@ public class PigeonCoopBlock extends Block implements EntityBlock {
         if (level.isClientSide)
             return InteractionResult.SUCCESS;
 
-        NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) level.getBlockEntity(pos));
+        NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) level.getBlockEntity(pos), pos);
         return InteractionResult.CONSUME;
     }
 

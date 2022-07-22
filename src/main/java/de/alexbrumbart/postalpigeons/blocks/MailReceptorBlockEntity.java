@@ -10,8 +10,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,6 +37,14 @@ public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider
 
     public String getName() {
         return name;
+    }
+
+    public void putInventory(ItemStackHandler otherInventory) {
+        for (int i = 0; i < otherInventory.getSlots(); i++) {
+            ItemStack stack = ItemHandlerHelper.insertItemStacked(inventory, otherInventory.extractItem(i, 64, false), false);
+            if (!stack.isEmpty())
+                otherInventory.insertItem(i, stack, false);
+        }
     }
 
     public void onRemove() {

@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,11 @@ public class MailReceptorStorage extends SavedData {
 
     public boolean hasEntry(String name) {
         return positions.containsKey(name);
+    }
+
+    @Nullable
+    public BlockPos getPosition(String name) {
+        return positions.get(name);
     }
 
     public Set<Map.Entry<String, BlockPos>> getEntries() {

@@ -1,9 +1,12 @@
 package de.alexbrumbart.postalpigeons.rendering;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.alexbrumbart.postalpigeons.PostalPigeons;
 import de.alexbrumbart.postalpigeons.blocks.PigeonCoopContainer;
+import de.alexbrumbart.postalpigeons.util.NetworkHandler;
+import de.alexbrumbart.postalpigeons.util.packets.SBPigeonGoalPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -31,7 +34,7 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
         super.init();
 
         editBox = addRenderableWidget(new EditBox(Minecraft.getInstance().font, leftPos + 86, topPos + 74, 165, 20, editBox, Component.empty()));
-        addRenderableWidget(new Button(leftPos + 118, topPos + 100, 100, 20, sendPigeonComponent, b -> { /* TODO Taube senden */ }));
+        addRenderableWidget(new Button(leftPos + 118, topPos + 100, 100, 20, sendPigeonComponent, button -> NetworkHandler.INSTANCE.sendToServer(new SBPigeonGoalPacket(editBox.getValue(), menu.getPos()))));
     }
 
     @Override
@@ -56,5 +59,14 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
         font.draw(poseStack, playerInventoryTitle, 49, 157, 4210752);
         font.draw(poseStack, Component.translatable("postalpigeons.container.pigeon_coop.pigeons", menu.getPigeonAmount()), 88, 17, 4210752);
         font.draw(poseStack, Component.translatable("postalpigeons.container.pigeon_coop.available", menu.getRemainingPigeonAmount(), menu.getPigeonAmount()), 88, 28, 4210752);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
+        if (Minecraft.getInstance().options.keyInventory.isActiveAndMatches(mouseKey))
+            return false;
+
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 }

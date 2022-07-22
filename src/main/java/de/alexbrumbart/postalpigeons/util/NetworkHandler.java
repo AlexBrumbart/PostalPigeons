@@ -3,6 +3,7 @@ package de.alexbrumbart.postalpigeons.util;
 import de.alexbrumbart.postalpigeons.PostalPigeons;
 import de.alexbrumbart.postalpigeons.util.packets.CBMailReceptorPacket;
 import de.alexbrumbart.postalpigeons.util.packets.SBMailReceptorPacket;
+import de.alexbrumbart.postalpigeons.util.packets.SBPigeonGoalPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
@@ -21,5 +22,6 @@ public class NetworkHandler {
     public static void registerPackets() {
         INSTANCE.registerMessage(0, CBMailReceptorPacket.class, CBMailReceptorPacket::encode, CBMailReceptorPacket::new, CBMailReceptorPacket::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         INSTANCE.registerMessage(1, SBMailReceptorPacket.class, SBMailReceptorPacket::encode, SBMailReceptorPacket::new, SBMailReceptorPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        INSTANCE.registerMessage(2, SBPigeonGoalPacket.class, SBPigeonGoalPacket::encode, SBPigeonGoalPacket::new, SBPigeonGoalPacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
     }
 }

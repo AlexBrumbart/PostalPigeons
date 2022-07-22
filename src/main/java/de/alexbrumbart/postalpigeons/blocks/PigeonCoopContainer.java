@@ -1,10 +1,14 @@
 package de.alexbrumbart.postalpigeons.blocks;
 
 import de.alexbrumbart.postalpigeons.ModRegistries;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -14,15 +18,21 @@ import org.jetbrains.annotations.NotNull;
 
 public class PigeonCoopContainer extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
+    private final ContainerData data;
+    private final BlockPos pos;
 
-    public PigeonCoopContainer(int containerId, Inventory playerInventory) {
-        this(containerId, playerInventory, new ItemStackHandler(9), ContainerLevelAccess.NULL);
+    public PigeonCoopContainer(int containerId, Inventory playerInventory, FriendlyByteBuf buf) {
+        this(containerId, playerInventory, new ItemStackHandler(9), buf.readBlockPos(), new SimpleContainerData(2), ContainerLevelAccess.NULL);
     }
 
-    public PigeonCoopContainer(int containerId, Inventory playerInventory, ItemStackHandler inventory, ContainerLevelAccess access) {
+    public PigeonCoopContainer(int containerId, Inventory playerInventory, ItemStackHandler inventory, BlockPos position, ContainerData data, ContainerLevelAccess access) {
         super(ModRegistries.PIGEON_COOP_MENU.get(), containerId);
 
         this.access = access;
+        this.data = data;
+        this.pos = position;
+
+        addDataSlots(data);
 
         final int firstX = 8;
         final int firstY = 94;
@@ -88,10 +98,14 @@ public class PigeonCoopContainer extends AbstractContainerMenu {
     }
 
     public int getPigeonAmount() {
-        return 0; // TODO finish
+        return data.get(0);
     }
 
     public int getRemainingPigeonAmount() {
-        return 2; // TODO finish
+        return data.get(1);
+    }
+
+    public BlockPos getPos() {
+        return pos;
     }
 }
