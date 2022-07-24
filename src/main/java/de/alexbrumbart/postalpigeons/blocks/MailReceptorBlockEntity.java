@@ -17,8 +17,10 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler inventory = new ItemStackHandler(18) { // TODO Integration mit Hoppern und Redstone
+    private final ItemStackHandler inventory = new ItemStackHandler(18) {
 
         @Override
         protected void onContentsChanged(int slot) {
@@ -65,7 +67,7 @@ public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-        return new MailReceptorContainer(containerId, playerInventory, inventory, ContainerLevelAccess.create(level, worldPosition));
+        return new MailReceptorContainer(containerId, playerInventory, inventory, ContainerLevelAccess.create(Objects.requireNonNull(level), worldPosition));
     }
 
     @Override
