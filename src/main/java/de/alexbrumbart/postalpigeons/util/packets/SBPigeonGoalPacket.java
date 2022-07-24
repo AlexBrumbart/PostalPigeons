@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class SBPigeonGoalPacket {
@@ -31,11 +32,11 @@ public class SBPigeonGoalPacket {
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();
-            assert player != null;
-
-            MailReceptorStorage storage = MailReceptorStorage.getInstance((ServerLevel) player.level);
-            if (storage.hasEntry(name) && player.level.getBlockEntity(coopPos) instanceof PigeonCoopBlockEntity tile) {
-                tile.sendPigeon(storage.getPosition(name));
+            if (player != null) {
+                MailReceptorStorage storage = MailReceptorStorage.getInstance((ServerLevel) player.level);
+                if (storage.hasEntry(name) && player.level.getBlockEntity(coopPos) instanceof PigeonCoopBlockEntity tile && tile.canSendPigeon()) {
+                    tile.sendPigeon(Objects.requireNonNull(storage.getPosition(name)));
+                }
             }
         });
 

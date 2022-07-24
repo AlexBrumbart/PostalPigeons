@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.AbstractMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
@@ -33,7 +34,7 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
 
     private int remainingPigeons = 0;
     private final List<AbstractMap.SimpleEntry<UUID, Boolean>> pigeons = new LinkedList<>();
-    private final AABB searchBox = new AABB(worldPosition.getX() - 5, worldPosition.getY() - 5, worldPosition.getZ() - 5, worldPosition.getX() + 6, worldPosition.getY() + 6, worldPosition.getZ() + 6);
+    private final AABB searchBox = new AABB(worldPosition.getX() - 5D, worldPosition.getY() - 5D, worldPosition.getZ() - 5D, worldPosition.getX() + 6D, worldPosition.getY() + 6D, worldPosition.getZ() + 6D);
 
     private final ItemStackHandler inventory = new ItemStackHandler(9) {
 
@@ -83,6 +84,7 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
         remainingPigeons++;
     }
 
+    @SuppressWarnings("all")
     public void removePigeon(Pigeon pigeon) {
         for (int i = 0; i < maxPigeons; i++) {
             if (pigeons.get(i).getKey().equals(pigeon.getUUID())) {
@@ -94,9 +96,7 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public void sendPigeon(BlockPos position) {
-        // TODO let it cost some seeds to send pigeons
-
-        if (remainingPigeons <= 0)
+        if (remainingPigeons <= 0 || !canSendPigeon() || level == null)
             return;
 
         Pigeon pigeonEntity = level.getEntitiesOfClass(Pigeon.class, searchBox).stream().filter(pigeon -> {
@@ -110,6 +110,7 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
 
         if (pigeonEntity != null) {
             ItemStack seeds = inventory.extractItem(0, 64, false);
+            seeds.shrink(25);
 
             pigeonEntity.inputInventory(inventory);
             pigeonEntity.setGoalPos(position);
@@ -144,16 +145,20 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
         return pigeons.size() < maxPigeons && inventory.getStackInSlot(0).getItem() == Items.WHEAT_SEEDS && inventory.getStackInSlot(0).getCount() >= 10;
     }
 
+    public boolean canSendPigeon() {
+        return inventory.getStackInSlot(0).getItem() == Items.WHEAT_SEEDS && inventory.getStackInSlot(0).getCount() >= 25;
+    }
+
     public void onRemove() {
         if (level != null) {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < inventory.getSlots(); i++) {
                 if (!inventory.getStackInSlot(i).isEmpty()) {
                     Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), inventory.extractItem(i, 64, false));
                 }
             }
 
             var pigeonList = pigeons.stream().map(AbstractMap.SimpleEntry::getKey).toList();
-            level.getEntitiesOfClass(Pigeon.class, searchBox).stream().forEach(pigeon -> {
+            level.getEntitiesOfClass(Pigeon.class, searchBox).forEach(pigeon -> {
                 if (pigeonList.contains(pigeon.getUUID()))
                     pigeon.setHomePos(null);
             });
@@ -168,7 +173,7 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-        return new PigeonCoopContainer(containerId, playerInventory, inventory, worldPosition, data, ContainerLevelAccess.create(level, worldPosition));
+        return new PigeonCoopContainer(containerId, playerInventory, inventory, worldPosition, data, ContainerLevelAccess.create(Objects.requireNonNull(level), worldPosition));
     }
 
     @Override

@@ -6,16 +6,26 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
+
+import java.util.stream.Stream;
 
 @SuppressWarnings("deprecation")
 public class PigeonCoopBlock extends Block implements EntityBlock {
+    private static final VoxelShape shape = Stream.of(Block.box(2, 0, 2, 14, 1, 13), Block.box(1, 0, 1, 3, 13.75D, 3), Block.box(13, 0, 1, 15, 13.75D, 3), Block.box(1, 0, 12, 3, 9.25D, 14), Block.box(13, 0, 12, 15, 9.25D, 14),
+            Block.box(0, 7, 12, 16, 11, 16), Block.box(0, 13, 0, 16, 17, 4), Block.box(0, 11, 4, 16, 15, 8), Block.box(0, 9, 8, 16, 13, 12)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+
     public PigeonCoopBlock(Properties properties) {
         super(properties);
     }
@@ -23,6 +33,11 @@ public class PigeonCoopBlock extends Block implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new PigeonCoopBlockEntity(pos, state);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return shape;
     }
 
     @Override
