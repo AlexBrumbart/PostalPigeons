@@ -3,8 +3,10 @@ package de.alexbrumbart.postalpigeons.blocks;
 import de.alexbrumbart.postalpigeons.ModRegistries;
 import de.alexbrumbart.postalpigeons.entity.Pigeon;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -82,6 +84,9 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
         seeds.shrink(10);
         inventory.setStackInSlot(0, seeds);
         remainingPigeons++;
+
+        assert level != null;
+        ((ServerLevel)level).sendParticles(ParticleTypes.HEART, worldPosition.getX() + 0.5D, worldPosition.getY() + 1D, worldPosition.getZ() + 0.5D, 1, 0, 0, 0, 0.1F);
     }
 
     @SuppressWarnings("all")
