@@ -94,6 +94,7 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
         for (int i = 0; i < maxPigeons; i++) {
             if (pigeons.get(i).getKey().equals(pigeon.getUUID())) {
                 pigeons.remove(i);
+                remainingPigeons--;
 
                 return;
             }
