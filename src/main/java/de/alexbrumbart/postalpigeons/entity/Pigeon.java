@@ -8,6 +8,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -30,6 +32,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -100,10 +103,6 @@ public class Pigeon extends Animal implements FlyingAnimal {
         this.goalPos = goalPos;
     }
 
-    public boolean wasAway() {
-        return wasAway;
-    }
-
     public void setWasAway(boolean wasAway) {
         this.wasAway = wasAway;
     }
@@ -139,6 +138,26 @@ public class Pigeon extends Animal implements FlyingAnimal {
     @Override
     public boolean isFood(ItemStack stack) {
         return stack.getItem() == Items.WHEAT_SEEDS;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.CHICKEN_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return SoundEvents.CHICKEN_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.CHICKEN_DEATH;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pPos, BlockState pBlock) {
+        this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
     }
 
     @Override
