@@ -1,7 +1,0 @@
-{
-  "postalpigeon.container.mail_receptor": "Mail Receptor {0}",
-  "postalpigeons.container.pigeon_coop": "Pigeon Coop",
-  "postalpigeons.container.pigeon_coop.pigeons": "{0} / 8 Pigeons bound",
-  "postalpigeons.container.pigeon_coop.available": "{0} / {1} Pigeons at home",
-  "postalpigeons.container.pigeon_coop.send": "Send Pigeon"
-}
