@@ -60,7 +60,7 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         public void set(int index, int value) {
             if (index == 1)
-               remainingPigeons = value;
+                remainingPigeons = value;
         }
 
         @Override
@@ -86,15 +86,17 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
         remainingPigeons++;
 
         assert level != null;
-        ((ServerLevel)level).sendParticles(ParticleTypes.HEART, worldPosition.getX() + 0.5D, worldPosition.getY() + 1D, worldPosition.getZ() + 0.5D, 1, 0, 0, 0, 0.1F);
+        ((ServerLevel) level).sendParticles(ParticleTypes.HEART, worldPosition.getX() + 0.5D, worldPosition.getY() + 1D, worldPosition.getZ() + 0.5D, 1, 0, 0, 0, 0.1F);
     }
 
     @SuppressWarnings("all")
-    public void removePigeon(Pigeon pigeon) {
+    public void removePigeon(Pigeon pigeon, boolean wasAway) {
         for (int i = 0; i < maxPigeons; i++) {
             if (pigeons.get(i).getKey().equals(pigeon.getUUID())) {
                 pigeons.remove(i);
-                remainingPigeons--;
+
+                if (!wasAway)
+                    remainingPigeons--;
 
                 return;
             }
@@ -125,6 +127,13 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
             inventory.insertItem(0, seeds, false);
 
             remainingPigeons--;
+            for (var entry : pigeons) {
+                if (entry.getKey().equals(pigeonEntity.getUUID())) {
+                    entry.setValue(false);
+
+                    break;
+                }
+            }
         }
     }
 

@@ -131,7 +131,7 @@ public class Pigeon extends Animal implements FlyingAnimal {
         if (homePos != null && getRemovalReason() == RemovalReason.KILLED) {
             PigeonCoopBlockEntity tile = (PigeonCoopBlockEntity) level.getBlockEntity(homePos);
             if (tile != null)
-                tile.removePigeon(this);
+                tile.removePigeon(this, wasAway);
         }
     }
 
@@ -170,6 +170,7 @@ public class Pigeon extends Animal implements FlyingAnimal {
             tag.put("goal", NbtUtils.writeBlockPos(goalPos));
 
         tag.put("inventory", inventory.serializeNBT());
+        tag.putBoolean("wasAway", wasAway);
     }
 
     @Override
@@ -182,6 +183,7 @@ public class Pigeon extends Animal implements FlyingAnimal {
             goalPos = NbtUtils.readBlockPos(tag.getCompound("goal"));
 
         inventory.deserializeNBT(tag.getCompound("inventory"));
+        wasAway = tag.getBoolean("wasAway");
     }
 
     @SubscribeEvent
