@@ -17,6 +17,6 @@ public class BlockStateGenerator extends BlockStateProvider {
     protected void registerStatesAndModels() {
         String mailReceptorPath = ModRegistries.MAIL_RECEPTOR.getKey().location().getPath();
         simpleBlock(ModRegistries.MAIL_RECEPTOR.get(), models().cubeBottomTop(mailReceptorPath, modLoc("block/mail_receptor_side"), modLoc("block/mail_receptor_bottom"), modLoc("block/mail_receptor_top")));
-        simpleBlock(ModRegistries.PIGEON_COOP.get(), models().getExistingFile(ModelLocationUtils.getModelLocation(ModRegistries.PIGEON_COOP.get())));
+        horizontalBlock(ModRegistries.PIGEON_COOP.get(), models().getExistingFile(ModelLocationUtils.getModelLocation(ModRegistries.PIGEON_COOP.get())));
     }
 }
