@@ -67,10 +67,10 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
 
         if (pigeon != null) {
             poseStack.pushPose();
-            poseStack.translate(leftPos + 31D, topPos + 67D, 0);
+            poseStack.translate(leftPos + 32D, topPos + 67D, 0);
             poseStack.scale(60, 60, 60);
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(30));
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(35));
 
             EntityRenderDispatcher erd = Minecraft.getInstance().getEntityRenderDispatcher();
             MultiBufferSource.BufferSource immediate = Minecraft.getInstance().renderBuffers().bufferSource();
