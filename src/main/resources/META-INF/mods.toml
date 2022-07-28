@@ -12,7 +12,7 @@ displayName="Postal Pigeons" #mandatory
 #updateJSONURL="https://change.me.example.invalid/updates.json"
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/"
 #logoFile="examplemod.png"
-credits="Thanks to the Forge Team for making Forge to what it is."
+credits="Thanks to the Forge Team for making Forge."
 authors="AlexBrumbart"
 description='''
 A mod about pigeons to transport items from one spot to another.
