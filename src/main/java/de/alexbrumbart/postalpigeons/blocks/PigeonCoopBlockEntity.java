@@ -87,6 +87,8 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
 
         assert level != null;
         ((ServerLevel) level).sendParticles(ParticleTypes.HEART, worldPosition.getX() + 0.5D, worldPosition.getY() + 1D, worldPosition.getZ() + 0.5D, 1, 0, 0, 0, 0.1F);
+
+        setChanged();
     }
 
     @SuppressWarnings("all")
@@ -97,6 +99,8 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
 
                 if (!wasAway)
                     remainingPigeons--;
+
+                setChanged();
 
                 return;
             }
@@ -125,15 +129,7 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
             pigeonEntity.setWasAway(true);
 
             inventory.insertItem(0, seeds, false);
-
-            remainingPigeons--;
-            for (var entry : pigeons) {
-                if (entry.getKey().equals(pigeonEntity.getUUID())) {
-                    entry.setValue(false);
-
-                    break;
-                }
-            }
+            setAtHome(pigeonEntity.getUUID(), false);
         }
     }
 
@@ -150,6 +146,8 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
             if (entry.getKey().equals(uuid)) {
                 entry.setValue(atHome);
                 remainingPigeons = atHome ? remainingPigeons + 1 : remainingPigeons - 1;
+
+                setChanged();
 
                 return;
             }
