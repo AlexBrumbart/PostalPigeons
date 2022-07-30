@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "X": {
+      "tag": "minecraft:logs"
+    },
+    "Y": {
+      "item": "minecraft:hay_block"
+    }
+  },
+  "pattern": [
+    "###",
+    "X X",
+    "XYX"
+  ],
+  "result": {
+    "item": "postalpigeons:pigeon_coop"
+  }
+}

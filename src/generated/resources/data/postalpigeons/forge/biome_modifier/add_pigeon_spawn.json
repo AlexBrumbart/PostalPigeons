@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#minecraft:is_forest",
+  "spawners": {
+    "type": "postalpigeons:pigeon",
+    "maxCount": 6,
+    "minCount": 1,
+    "weight": 20
+  }
+}

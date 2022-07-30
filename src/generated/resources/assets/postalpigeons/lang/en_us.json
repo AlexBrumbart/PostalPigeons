@@ -1,0 +1,13 @@
+{
+  "block.postalpigeons.mail_receptor": "Mail Receptor",
+  "block.postalpigeons.pigeon_coop": "Pigeon Coop",
+  "entity.postalpigeons.pigeon": "Pigeon",
+  "item.postalpigeons.pigeon_spawn_egg": "Pigeon Spawn Egg",
+  "itemGroup.postalpigeons": "Postal Pigeons",
+  "postalpigeon.container.mail_receptor": "Mail Receptor: {0}",
+  "postalpigeon.screen.mail_receptor_button": "OK",
+  "postalpigeons.container.pigeon_coop": "Pigeon Coop",
+  "postalpigeons.container.pigeon_coop.available": "{0} / {1} Pigeons at home",
+  "postalpigeons.container.pigeon_coop.pigeons": "{0} / 8 Pigeons bound",
+  "postalpigeons.container.pigeon_coop.send": "Send Pigeon"
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "postalpigeons:block/pigeon_coop",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "postalpigeons:block/pigeon_coop"
+    },
+    "facing=south": {
+      "model": "postalpigeons:block/pigeon_coop",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "postalpigeons:block/pigeon_coop",
+      "y": 270
+    }
+  }
+}
