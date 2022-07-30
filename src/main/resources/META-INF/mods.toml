@@ -1,9 +1,8 @@
 modLoader="javafml"
-loaderVersion="[41,)"
+loaderVersion="[42,)"
 
 license="All rights reserved"
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
-
 
 [[mods]]
 modId="postalpigeons"
@@ -22,12 +21,12 @@ Made for the 2022 ForgeJam.
 [[dependencies.postalpigeons]]
     modId="forge"
     mandatory=true
-    versionRange="[41,)"
+    versionRange="[42,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.postalpigeons]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19,1.20)"
+    versionRange="[1.19.1,1.20)"
     ordering="NONE"
     side="BOTH"
