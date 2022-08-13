@@ -1,12 +1,12 @@
-package de.alexbrumbart.postalpigeons.data;
+package de.alexbrumbart.postalpigeons.data.language;
 
 import de.alexbrumbart.postalpigeons.ModRegistries;
 import de.alexbrumbart.postalpigeons.PostalPigeons;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 
-public class LanguageGenerator extends LanguageProvider {
-    public LanguageGenerator(DataGenerator generator) {
+public class ENLanguageGenerator extends LanguageProvider {
+    public ENLanguageGenerator(DataGenerator generator) {
         super(generator, PostalPigeons.ID, "en_us");
     }
 

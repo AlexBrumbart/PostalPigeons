@@ -1,0 +1,13 @@
+{
+  "block.postalpigeons.mail_receptor": "邮件接收器",
+  "block.postalpigeons.pigeon_coop": "鸽舍",
+  "entity.postalpigeons.pigeon": "鸽子",
+  "item.postalpigeons.pigeon_spawn_egg": "鸽子刷怪蛋",
+  "itemGroup.postalpigeons": "信鸽",
+  "postalpigeon.container.mail_receptor": "邮件接收器: {0}",
+  "postalpigeon.screen.mail_receptor_button": "OK",
+  "postalpigeons.container.pigeon_coop": "鸽舍",
+  "postalpigeons.container.pigeon_coop.available": "{0} / {1} 只鸽子在家",
+  "postalpigeons.container.pigeon_coop.pigeons": "{0} / 8 只鸽子已绑定",
+  "postalpigeons.container.pigeon_coop.send": "发送鸽子"
+}

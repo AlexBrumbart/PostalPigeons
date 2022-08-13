@@ -1,0 +1,13 @@
+{
+  "block.postalpigeons.mail_receptor": "Briefkasten",
+  "block.postalpigeons.pigeon_coop": "Taubenschlag",
+  "entity.postalpigeons.pigeon": "Taube",
+  "item.postalpigeons.pigeon_spawn_egg": "Tauben Spawn Ei",
+  "itemGroup.postalpigeons": "Postal Pigeons",
+  "postalpigeon.container.mail_receptor": "Briefkasten: {0}",
+  "postalpigeon.screen.mail_receptor_button": "OK",
+  "postalpigeons.container.pigeon_coop": "Taubenschlag",
+  "postalpigeons.container.pigeon_coop.available": "{0} / {1} Tauben zu Hause",
+  "postalpigeons.container.pigeon_coop.pigeons": "{0} / 8 Tauben gebunden",
+  "postalpigeons.container.pigeon_coop.send": "Verschicke Taube"
+}

@@ -4,7 +4,9 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import de.alexbrumbart.postalpigeons.data.BlockStateGenerator;
 import de.alexbrumbart.postalpigeons.data.ItemModelGenerator;
-import de.alexbrumbart.postalpigeons.data.LanguageGenerator;
+import de.alexbrumbart.postalpigeons.data.language.CNLanguageGenerator;
+import de.alexbrumbart.postalpigeons.data.language.DELanguageGenerator;
+import de.alexbrumbart.postalpigeons.data.language.ENLanguageGenerator;
 import de.alexbrumbart.postalpigeons.data.CraftingRecipeGenerator;
 import de.alexbrumbart.postalpigeons.data.LootTableGenerator;
 import de.alexbrumbart.postalpigeons.util.NetworkHandler;
@@ -64,7 +66,9 @@ public class PostalPigeons {
 
         generator.addProvider(event.includeClient(), new BlockStateGenerator(generator, existingFileHelper));
         generator.addProvider(event.includeClient(), new ItemModelGenerator(generator, existingFileHelper));
-        generator.addProvider(event.includeClient(), new LanguageGenerator(generator));
+        generator.addProvider(event.includeClient(), new ENLanguageGenerator(generator));
+        generator.addProvider(event.includeClient(), new DELanguageGenerator(generator));
+        generator.addProvider(event.includeClient(), new CNLanguageGenerator(generator));
         generator.addProvider(event.includeServer(), new CraftingRecipeGenerator(generator));
         generator.addProvider(event.includeServer(), new LootTableGenerator(generator));
 
