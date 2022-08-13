@@ -54,9 +54,7 @@ public class PostalPigeons {
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            ModRegistries.registerContainerScreens();
-        });
+        event.enqueueWork(ModRegistries::registerContainerScreens);
     }
 
     // Automatic data & asset generation
