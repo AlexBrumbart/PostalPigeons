@@ -36,7 +36,7 @@ public class SBMailReceptorPacket {
                 ServerLevel level = (ServerLevel) player.level;
 
                 if (level == level.getServer().overworld() && level.isLoaded(pos) && level.getBlockEntity(pos) instanceof MailReceptorBlockEntity tile) {
-                    if (MailReceptorStorage.getInstance(level).hasEntry(name)) {
+                    if (MailReceptorStorage.getInstance(level).getPosition(name) != null) {
                         String alternativeName = pos.toString();
 
                         MailReceptorStorage.getInstance(level).setPosition(alternativeName, pos);

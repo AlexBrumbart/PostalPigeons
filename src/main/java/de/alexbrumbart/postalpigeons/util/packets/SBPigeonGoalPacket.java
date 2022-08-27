@@ -34,7 +34,7 @@ public class SBPigeonGoalPacket {
             ServerPlayer player = ctx.get().getSender();
             if (player != null) {
                 MailReceptorStorage storage = MailReceptorStorage.getInstance((ServerLevel) player.level);
-                if (storage.hasEntry(name) && player.level.getBlockEntity(coopPos) instanceof PigeonCoopBlockEntity tile && tile.canSendPigeon()) {
+                if (storage.getPosition(name) != null && player.level.getBlockEntity(coopPos) instanceof PigeonCoopBlockEntity tile && tile.canSendPigeon()) {
                     tile.sendPigeon(Objects.requireNonNull(storage.getPosition(name)));
                 }
             }
