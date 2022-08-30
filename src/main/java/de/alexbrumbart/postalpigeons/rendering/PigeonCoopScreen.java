@@ -66,8 +66,14 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
         super.init();
 
         searchBox = addRenderableWidget(new EditBox(Minecraft.getInstance().font, leftPos + 89, topPos + 42, 120, 20, searchBox, Component.empty()));
-        backwardButton = addRenderableWidget(new PageButton(leftPos + 210, topPos + 45, false, b -> { page--; updateButtons(); }, true));
-        forwardButton = addRenderableWidget(new PageButton(leftPos + 228, topPos + 45, true, b -> { page++; updateButtons(); }, true));
+        backwardButton = addRenderableWidget(new PageButton(leftPos + 210, topPos + 45, false, b -> {
+            page--;
+            updateButtons();
+        }, true));
+        forwardButton = addRenderableWidget(new PageButton(leftPos + 228, topPos + 45, true, b -> {
+            page++;
+            updateButtons();
+        }, true));
         updateButtons();
     }
 
@@ -107,8 +113,12 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
         renderTooltip(poseStack, mouseX, mouseY);
 
         for (int i = 0; i < 3; i++) {
-            if (mouseX > leftPos + 88 && mouseX < leftPos + 249 && mouseY > topPos + 65 + 25 * i && mouseY < topPos + 89 + 25 * i)
-                renderTooltip(poseStack, sendPigeonComponent, mouseX, mouseY);
+            if (i + (page - 1) * 3 < entries.size()) {
+                if (mouseX > leftPos + 88 && mouseX < leftPos + 249 && mouseY > topPos + 65 + 25 * i && mouseY < topPos + 89 + 25 * i)
+                    renderTooltip(poseStack, sendPigeonComponent, mouseX, mouseY);
+            } else {
+                break;
+            }
         }
     }
 
@@ -180,11 +190,15 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (button == 0) {
             for (int i = 0; i < 3; i++) {
-                if (mouseX > leftPos + 88 && mouseX < leftPos + 249 && mouseY > topPos + 65 + 25 * i && mouseY < topPos + 89 + 25 * i) {
-                    NetworkHandler.INSTANCE.sendToServer(new SBPigeonGoalPacket(entries.get(i + (page - 1) * 3).getKey(), menu.getPos()));
-                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                if (i + (page - 1) * 3 < entries.size()) {
+                    if (mouseX > leftPos + 88 && mouseX < leftPos + 249 && mouseY > topPos + 65 + 25 * i && mouseY < topPos + 89 + 25 * i) {
+                        NetworkHandler.INSTANCE.sendToServer(new SBPigeonGoalPacket(entries.get(i + (page - 1) * 3).getKey(), menu.getPos()));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
-                    return true;
+                        return true;
+                    }
+                } else {
+                    break;
                 }
             }
         }
