@@ -8,6 +8,7 @@
   "postalpigeon.screen.mail_receptor_button": "OK",
   "postalpigeons.container.pigeon_coop": "鸽舍",
   "postalpigeons.container.pigeon_coop.available": "{0} / {1} 只鸽子在家",
+  "postalpigeons.container.pigeon_coop.distance": "距离: {0}",
   "postalpigeons.container.pigeon_coop.pigeons": "{0} / 8 只鸽子已绑定",
   "postalpigeons.container.pigeon_coop.send": "发送鸽子"
 }

@@ -107,8 +107,8 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
         }
     }
 
-    public void sendPigeon(BlockPos position) {
-        if (remainingPigeons <= 0 || !canSendPigeon() || level == null)
+    public void sendPigeon(BlockPos position, int neededSeeds) {
+        if (remainingPigeons <= 0 || inventory.getStackInSlot(0).getItem() != Items.WHEAT_SEEDS || inventory.getStackInSlot(0).getCount() < neededSeeds || level == null)
             return;
 
         Pigeon pigeonEntity = level.getEntitiesOfClass(Pigeon.class, searchBox).stream().filter(pigeon -> {
@@ -122,7 +122,7 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
 
         if (pigeonEntity != null) {
             ItemStack seeds = inventory.extractItem(0, 64, false);
-            seeds.shrink(25);
+            seeds.shrink(neededSeeds);
 
             pigeonEntity.inputInventory(inventory);
             pigeonEntity.setGoalPos(position);
@@ -156,10 +156,6 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
 
     public boolean canIncorporatePigeon() {
         return pigeons.size() < maxPigeons && inventory.getStackInSlot(0).getItem() == Items.WHEAT_SEEDS && inventory.getStackInSlot(0).getCount() >= 10;
-    }
-
-    public boolean canSendPigeon() {
-        return inventory.getStackInSlot(0).getItem() == Items.WHEAT_SEEDS && inventory.getStackInSlot(0).getCount() >= 25;
     }
 
     public void onRemove() {

@@ -21,6 +21,7 @@ public class ENLanguageGenerator extends LanguageProvider {
         add("postalpigeons.container.pigeon_coop.pigeons", "{0} / 8 Pigeons bound");
         add("postalpigeons.container.pigeon_coop.available", "{0} / {1} Pigeons at home");
         add("postalpigeons.container.pigeon_coop.send", "Send Pigeon");
+        add("postalpigeons.container.pigeon_coop.distance", "Distance: {0}");
         add(ModRegistries.PIGEON.get(), "Pigeon");
         add(ModRegistries.PIGEON_SPAWN_EGG.get(), "Pigeon Spawn Egg");
     }

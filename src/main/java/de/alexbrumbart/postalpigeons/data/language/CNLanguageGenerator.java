@@ -21,6 +21,7 @@ public class CNLanguageGenerator extends LanguageProvider {
         add("postalpigeons.container.pigeon_coop.pigeons", "{0} / 8 只鸽子已绑定");
         add("postalpigeons.container.pigeon_coop.available", "{0} / {1} 只鸽子在家");
         add("postalpigeons.container.pigeon_coop.send", "发送鸽子");
+        add("postalpigeons.container.pigeon_coop.distance", "距离: {0}");
         add(ModRegistries.PIGEON.get(), "鸽子");
         add(ModRegistries.PIGEON_SPAWN_EGG.get(), "鸽子刷怪蛋");
     }

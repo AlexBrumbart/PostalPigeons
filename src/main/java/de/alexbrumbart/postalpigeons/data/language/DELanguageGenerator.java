@@ -21,6 +21,7 @@ public class DELanguageGenerator extends LanguageProvider {
         add("postalpigeons.container.pigeon_coop.pigeons", "{0} / 8 Tauben gebunden");
         add("postalpigeons.container.pigeon_coop.available", "{0} / {1} Tauben zu Hause");
         add("postalpigeons.container.pigeon_coop.send", "Verschicke Taube");
+        add("postalpigeons.container.pigeon_coop.distance", "Entfernung: {0}");
         add(ModRegistries.PIGEON.get(), "Taube");
         add(ModRegistries.PIGEON_SPAWN_EGG.get(), "Tauben Spawn Ei");
     }

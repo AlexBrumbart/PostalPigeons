@@ -8,6 +8,7 @@
   "postalpigeon.screen.mail_receptor_button": "OK",
   "postalpigeons.container.pigeon_coop": "Pigeon Coop",
   "postalpigeons.container.pigeon_coop.available": "{0} / {1} Pigeons at home",
+  "postalpigeons.container.pigeon_coop.distance": "Distance: {0}",
   "postalpigeons.container.pigeon_coop.pigeons": "{0} / 8 Pigeons bound",
   "postalpigeons.container.pigeon_coop.send": "Send Pigeon"
 }

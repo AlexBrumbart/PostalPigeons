@@ -1,6 +1,8 @@
 package de.alexbrumbart.postalpigeons.util;
 
+import de.alexbrumbart.postalpigeons.rendering.PigeonCoopScreen;
 import de.alexbrumbart.postalpigeons.util.packets.SBCoopSyncPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -77,6 +79,10 @@ public class MailReceptorStorage extends SavedData {
         }
 
         version = versionCache;
+
+        // Updates cached entries
+        if (Minecraft.getInstance().screen instanceof PigeonCoopScreen coopScreen)
+            coopScreen.updateEntries();
     }
 
     /***** Instance management *****/
