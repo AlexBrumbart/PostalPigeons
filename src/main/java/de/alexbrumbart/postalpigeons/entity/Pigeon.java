@@ -103,6 +103,10 @@ public class Pigeon extends Animal implements FlyingAnimal {
         this.goalPos = goalPos;
     }
 
+    public boolean canSendAway() {
+        return goalPos == null;
+    }
+
     public void setWasAway(boolean wasAway) {
         this.wasAway = wasAway;
     }

@@ -112,6 +112,9 @@ public class PigeonCoopBlockEntity extends BlockEntity implements MenuProvider {
             return;
 
         Pigeon pigeonEntity = level.getEntitiesOfClass(Pigeon.class, searchBox).stream().filter(pigeon -> {
+            if (!pigeon.canSendAway())
+                return false;
+
             for (var entry : pigeons) {
                 if (entry.getKey().equals(pigeon.getUUID()))
                     return true;
