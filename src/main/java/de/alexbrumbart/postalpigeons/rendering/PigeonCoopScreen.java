@@ -80,7 +80,7 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
     // Update unmodified entry list when MailReceptorStorage sync completes.
     public void updateEntries() {
         unmodifiedEntries = MailReceptorStorage.getClientInstance().getEntries();
-        entries = unmodifiedEntries.stream().filter(entry -> entry.getKey().toLowerCase().contains(searchBox.getValue())).toList();
+        entries = unmodifiedEntries.stream().filter(entry -> entry.getKey().toLowerCase().contains(searchBox.getValue().toLowerCase())).toList();
 
         maxPages = ((entries.size() - 1) / 3) + 1;
         page = Math.min(page, maxPages);
@@ -96,7 +96,7 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
     @Override
     protected void containerTick() {
         if (!searchBox.getValue().equals(lastSearchString)) {
-            entries = unmodifiedEntries.stream().filter(entry -> entry.getKey().toLowerCase().contains(searchBox.getValue())).toList();
+            entries = unmodifiedEntries.stream().filter(entry -> entry.getKey().toLowerCase().contains(searchBox.getValue().toLowerCase())).toList();
             lastSearchString = searchBox.getValue();
 
             maxPages = ((entries.size() - 1) / 3) + 1;
