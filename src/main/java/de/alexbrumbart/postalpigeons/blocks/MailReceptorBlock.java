@@ -6,11 +6,13 @@ import de.alexbrumbart.postalpigeons.util.packets.CBMailReceptorPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -57,5 +59,15 @@ public class MailReceptorBlock extends Block implements EntityBlock {
         MailReceptorStorage.getInstance((ServerLevel) level).removePosition(receptor.getName());
         receptor.onRemove();
         level.removeBlockEntity(pos);
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        return AbstractContainerMenu.getRedstoneSignalFromContainer((Container) level.getBlockEntity(pos));
     }
 }
