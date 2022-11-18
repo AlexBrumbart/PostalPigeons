@@ -67,6 +67,13 @@ public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider
         }
     }
 
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+
+        handler.invalidate();
+    }
+
     // Copied from AbstractContainerMenu#getRedstoneSignalFromContainer()
     public int calculateRedstoneOutput() {
         int i = 0;
