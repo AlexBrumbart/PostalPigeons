@@ -1,14 +1,13 @@
 package de.alexbrumbart.postalpigeons.blocks;
 
-import com.google.common.base.Suppliers;
 import de.alexbrumbart.postalpigeons.ModRegistries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -16,16 +15,18 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.stream.IntStream;
 
-public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider, WorldlyContainer {
-    private final Supplier<int[]> slots = Suppliers.memoize(() -> IntStream.range(0, 18).toArray());
+public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider{
     private final ItemStackHandler inventory = new ItemStackHandler(18) {
 
         @Override
@@ -33,6 +34,7 @@ public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider
             MailReceptorBlockEntity.this.setChanged();
         }
     };
+    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> inventory);
     private String name = "";
 
     public MailReceptorBlockEntity(BlockPos pos, BlockState state) {
@@ -65,6 +67,23 @@ public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider
         }
     }
 
+    // Copied from AbstractContainerMenu#getRedstoneSignalFromContainer()
+    public int calculateRedstoneOutput() {
+        int i = 0;
+        float f = 0.0F;
+
+        for(int j = 0; j < inventory.getSlots(); ++j) {
+            ItemStack itemstack = inventory.getStackInSlot(j);
+            if (!itemstack.isEmpty()) {
+                f += itemstack.getCount() / (float) Math.min(64, itemstack.getMaxStackSize());
+                ++i;
+            }
+        }
+
+        f /= inventory.getSlots();
+        return Mth.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable("postalpigeon.container.mail_receptor", name);
@@ -92,67 +111,11 @@ public class MailReceptorBlockEntity extends BlockEntity implements MenuProvider
         name = tag.getString("name");
     }
 
-    // Container implementation for hopper integration
-
     @Override
-    public int[] getSlotsForFace(Direction side) {
-        return slots.get();
-    }
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER)
+            return handler.cast();
 
-    @Override
-    public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
-        return true;
-    }
-
-    @Override
-    public boolean canTakeItemThroughFace(int pIndex, ItemStack pStack, Direction pDirection) {
-        return true;
-    }
-
-    @Override
-    public int getContainerSize() {
-        return inventory.getSlots();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (int i = 0; i < inventory.getSlots(); i++) {
-            if (!inventory.getStackInSlot(i).isEmpty())
-                return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public ItemStack getItem(int slot) {
-        return inventory.getStackInSlot(slot);
-    }
-
-    @Override
-    public ItemStack removeItem(int slot, int amount) {
-        return inventory.extractItem(slot, amount, false);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int slot) {
-        return inventory.extractItem(slot, 64, false);
-    }
-
-    @Override
-    public void setItem(int slot, ItemStack stack) {
-        inventory.setStackInSlot(slot, stack);
-    }
-
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return true;
-    }
-
-    @Override
-    public void clearContent() {
-        for (int i = 0; i < inventory.getSlots(); i++) {
-            inventory.setStackInSlot(i, ItemStack.EMPTY);
-        }
+        return super.getCapability(cap, side);
     }
 }
