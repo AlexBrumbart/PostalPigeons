@@ -24,5 +24,7 @@ public class DELanguageGenerator extends LanguageProvider {
         add("postalpigeons.container.pigeon_coop.distance", "Entfernung: {0}");
         add(ModRegistries.PIGEON.get(), "Taube");
         add(ModRegistries.PIGEON_SPAWN_EGG.get(), "Tauben Spawn Ei");
+
+        add("postalpigeons.forbiddenPlacement", "Kann nicht im Nether oder End platziert werden.");
     }
 }

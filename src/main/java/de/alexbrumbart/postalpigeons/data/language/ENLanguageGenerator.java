@@ -24,5 +24,7 @@ public class ENLanguageGenerator extends LanguageProvider {
         add("postalpigeons.container.pigeon_coop.distance", "Distance: {0}");
         add(ModRegistries.PIGEON.get(), "Pigeon");
         add(ModRegistries.PIGEON_SPAWN_EGG.get(), "Pigeon Spawn Egg");
+
+        add("postalpigeons.forbiddenPlacement", "Can not be placed in the Nether or End.");
     }
 }
