@@ -242,7 +242,7 @@ public class Pigeon extends Animal implements FlyingAnimal {
 
         @Override
         public boolean canUse() {
-            return pigeon.homePos != null && pigeon.homePos.distToCenterSqr(pigeon.position()) > 25;
+            return pigeon.homePos != null && (pigeon.homePos.distToCenterSqr(pigeon.position()) > 25 || wasAway);
         }
 
         @Override
