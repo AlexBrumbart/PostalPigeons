@@ -21,11 +21,13 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,7 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
     private static final Component sendPigeonComponent = Component.translatable("postalpigeons.container.pigeon_coop.send");
     private static final ItemStack seeds = new ItemStack(Items.WHEAT_SEEDS);
 
+    private final ResourceKey<Level> dimension;
     private final Pigeon pigeon;
     private Set<Map.Entry<String, BlockPos>> unmodifiedEntries;
     private List<Map.Entry<String, BlockPos>> entries;
@@ -55,8 +58,9 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
         this.imageWidth = 256;
         this.imageHeight = 251;
 
+        this.dimension = playerInventory.player.level.dimension();
         this.pigeon = ModRegistries.PIGEON.get().create(Minecraft.getInstance().level);
-        this.unmodifiedEntries = MailReceptorStorage.getClientInstance().getEntries();
+        this.unmodifiedEntries = MailReceptorStorage.getClientInstance(dimension).getEntries();
         this.entries = unmodifiedEntries.stream().toList();
         this.maxPages = ((entries.size() - 1) / 3) + 1;
     }
@@ -79,7 +83,7 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
 
     // Update unmodified entry list when MailReceptorStorage sync completes.
     public void updateEntries() {
-        unmodifiedEntries = MailReceptorStorage.getClientInstance().getEntries();
+        unmodifiedEntries = MailReceptorStorage.getClientInstanceUnsynced(dimension).getEntries();
         entries = unmodifiedEntries.stream().filter(entry -> entry.getKey().toLowerCase().contains(searchBox.getValue().toLowerCase())).toList();
 
         maxPages = ((entries.size() - 1) / 3) + 1;

@@ -5,7 +5,9 @@ import de.alexbrumbart.postalpigeons.util.packets.SBCoopSyncPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class MailReceptorStorage extends SavedData {
-    private static MailReceptorStorage clientStorage;
+    private static final Map<ResourceKey<Level>, MailReceptorStorage> clientStorageMap = new HashMap<>();
 
     private final Map<String, BlockPos> positions = new HashMap<>();
     private long version = 0;
@@ -91,13 +93,17 @@ public class MailReceptorStorage extends SavedData {
         return level.getDataStorage().computeIfAbsent(MailReceptorStorage::load, MailReceptorStorage::new, "mail_receptor_storage");
     }
 
-    public static MailReceptorStorage getClientInstance() {
-        if (clientStorage == null)
-            clientStorage = new MailReceptorStorage();
+    public static MailReceptorStorage getClientInstance(ResourceKey<Level> dimension) {
+        MailReceptorStorage storage = getClientInstanceUnsynced(dimension);
+        NetworkHandler.INSTANCE.sendToServer(new SBCoopSyncPacket(storage.version, dimension));
 
-        NetworkHandler.INSTANCE.sendToServer(new SBCoopSyncPacket(clientStorage.version));
+        return storage;
+    }
 
-        return clientStorage;
+    public static MailReceptorStorage getClientInstanceUnsynced(ResourceKey<Level> dimension) {
+        clientStorageMap.computeIfAbsent(dimension, dim -> new MailReceptorStorage());
+
+        return clientStorageMap.get(dimension);
     }
 
     private static MailReceptorStorage load(CompoundTag tag) {
