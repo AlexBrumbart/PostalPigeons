@@ -1,7 +1,7 @@
 package de.alexbrumbart.postalpigeons.util.packets;
 
 import de.alexbrumbart.postalpigeons.util.MailReceptorStorage;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
@@ -22,7 +22,7 @@ public class CBCoopSyncPacket {
 
     public CBCoopSyncPacket(FriendlyByteBuf buf) {
         this.storageData = buf.readAnySizeNbt();
-        this.dimension = buf.readResourceKey(Registry.DIMENSION_REGISTRY);
+        this.dimension = buf.readResourceKey(Registries.DIMENSION);
     }
 
     public void encode(FriendlyByteBuf buf) {

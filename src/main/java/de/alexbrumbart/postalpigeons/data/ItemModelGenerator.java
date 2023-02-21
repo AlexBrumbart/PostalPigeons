@@ -2,13 +2,13 @@ package de.alexbrumbart.postalpigeons.data;
 
 import de.alexbrumbart.postalpigeons.ModRegistries;
 import de.alexbrumbart.postalpigeons.PostalPigeons;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ItemModelGenerator extends ItemModelProvider {
-    public ItemModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, PostalPigeons.ID, existingFileHelper);
+    public ItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
+        super(output, PostalPigeons.ID, existingFileHelper);
     }
 
     @Override

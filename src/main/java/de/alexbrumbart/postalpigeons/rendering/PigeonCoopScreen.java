@@ -3,7 +3,7 @@ package de.alexbrumbart.postalpigeons.rendering;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import de.alexbrumbart.postalpigeons.ModRegistries;
 import de.alexbrumbart.postalpigeons.PostalPigeons;
 import de.alexbrumbart.postalpigeons.blocks.PigeonCoopContainer;
@@ -160,8 +160,8 @@ public class PigeonCoopScreen extends AbstractContainerScreen<PigeonCoopContaine
         poseStack.pushPose();
         poseStack.translate(leftPos + 32D, topPos + 67D, 0);
         poseStack.scale(60, 60, 60);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(180));
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(35));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(180));
+        poseStack.mulPose(Axis.YP.rotationDegrees(35));
 
         EntityRenderDispatcher erd = Minecraft.getInstance().getEntityRenderDispatcher();
         MultiBufferSource.BufferSource immediate = Minecraft.getInstance().renderBuffers().bufferSource();

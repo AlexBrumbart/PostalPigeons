@@ -2,12 +2,12 @@ package de.alexbrumbart.postalpigeons.data.language;
 
 import de.alexbrumbart.postalpigeons.ModRegistries;
 import de.alexbrumbart.postalpigeons.PostalPigeons;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
 public class CNLanguageGenerator extends LanguageProvider {
-    public CNLanguageGenerator(DataGenerator generator) {
-        super(generator, PostalPigeons.ID, "zh_cn");
+    public CNLanguageGenerator(PackOutput output) {
+        super(output, PostalPigeons.ID, "zh_cn");
     }
 
     @Override

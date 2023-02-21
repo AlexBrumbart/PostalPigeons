@@ -1,28 +1,31 @@
 package de.alexbrumbart.postalpigeons;
 
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
 import de.alexbrumbart.postalpigeons.data.BlockStateGenerator;
+import de.alexbrumbart.postalpigeons.data.CraftingRecipeGenerator;
 import de.alexbrumbart.postalpigeons.data.ItemModelGenerator;
 import de.alexbrumbart.postalpigeons.data.language.CNLanguageGenerator;
 import de.alexbrumbart.postalpigeons.data.language.DELanguageGenerator;
 import de.alexbrumbart.postalpigeons.data.language.ENLanguageGenerator;
-import de.alexbrumbart.postalpigeons.data.CraftingRecipeGenerator;
-import de.alexbrumbart.postalpigeons.data.LootTableGenerator;
+import de.alexbrumbart.postalpigeons.data.loot.BlockLootGenerator;
+import de.alexbrumbart.postalpigeons.data.loot.EntityLootGenerator;
 import de.alexbrumbart.postalpigeons.util.NetworkHandler;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.RegistryOps;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.JsonCodecProvider;
-import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers.AddSpawnsBiomeModifier;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -30,7 +33,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Map;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @Mod(PostalPigeons.ID)
 public class PostalPigeons {
@@ -40,6 +45,7 @@ public class PostalPigeons {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
+        modEventBus.addListener(this::createCreativeTab);
         modEventBus.addListener(this::gatherData);
 
         ModRegistries.BLOCKS.register(modEventBus);
@@ -57,21 +63,35 @@ public class PostalPigeons {
         event.enqueueWork(ModRegistries::registerContainerScreens);
     }
 
+    // Create Creative Tab
+    private void createCreativeTab(CreativeModeTabEvent.Register event) {
+        event.registerCreativeModeTab(new ResourceLocation(ID, ID), builder ->
+                builder.title(Component.translatable("itemGroup." + ID))
+                        .icon(() -> new ItemStack(ModRegistries.MAIL_RECEPTOR.get()))
+                        .displayItems((enabledFeatures, output, hasPermission) -> {
+                            output.accept(ModRegistries.MAIL_RECEPTOR_BI.get());
+                            output.accept(ModRegistries.PIGEON_COOP_BI.get());
+                            output.accept(ModRegistries.PIGEON_SPAWN_EGG.get());
+                        }));
+    }
+
     // Automatic data & asset generation
     private void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-        generator.addProvider(event.includeClient(), new BlockStateGenerator(generator, existingFileHelper));
-        generator.addProvider(event.includeClient(), new ItemModelGenerator(generator, existingFileHelper));
-        generator.addProvider(event.includeClient(), new ENLanguageGenerator(generator));
-        generator.addProvider(event.includeClient(), new DELanguageGenerator(generator));
-        generator.addProvider(event.includeClient(), new CNLanguageGenerator(generator));
-        generator.addProvider(event.includeServer(), new CraftingRecipeGenerator(generator));
-        generator.addProvider(event.includeServer(), new LootTableGenerator(generator));
+        generator.addProvider(event.includeClient(), (DataProvider.Factory<BlockStateGenerator>) output -> new BlockStateGenerator(output, existingFileHelper));
+        generator.addProvider(event.includeClient(), (DataProvider.Factory<ItemModelGenerator>) output -> new ItemModelGenerator(output, existingFileHelper));
+        generator.addProvider(event.includeClient(), (DataProvider.Factory<ENLanguageGenerator>) ENLanguageGenerator::new);
+        generator.addProvider(event.includeClient(), (DataProvider.Factory<DELanguageGenerator>) DELanguageGenerator::new);
+        generator.addProvider(event.includeClient(), (DataProvider.Factory<CNLanguageGenerator>) CNLanguageGenerator::new);
+        generator.addProvider(event.includeServer(), (DataProvider.Factory<CraftingRecipeGenerator>) CraftingRecipeGenerator::new);
+        generator.addProvider(event.includeServer(), (DataProvider.Factory<LootTableProvider>) output -> new LootTableProvider(output, Collections.emptySet(),
+                List.of(new LootTableProvider.SubProviderEntry(BlockLootGenerator::new, LootContextParamSets.BLOCK),
+                        new LootTableProvider.SubProviderEntry(EntityLootGenerator::new, LootContextParamSets.ENTITY))));
 
-        RegistryOps<JsonElement> ops = RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.builtinCopy());
-        BiomeModifier pigeonSpawn = AddSpawnsBiomeModifier.singleSpawn(new HolderSet.Named<>(ops.registry(Registry.BIOME_REGISTRY).orElseThrow(), BiomeTags.IS_FOREST), new SpawnerData(ModRegistries.PIGEON.get(), 20, 1, 6));
-        generator.addProvider(event.includeServer(), JsonCodecProvider.forDatapackRegistry(generator, existingFileHelper, ID, ops, ForgeRegistries.Keys.BIOME_MODIFIERS, Map.of(new ResourceLocation(ID, "add_pigeon_spawn"), pigeonSpawn)));
+        generator.addProvider(event.includeServer(), (DataProvider.Factory<DatapackBuiltinEntriesProvider>) output -> new DatapackBuiltinEntriesProvider(output, event.getLookupProvider(),
+                new RegistrySetBuilder().add(ForgeRegistries.Keys.BIOME_MODIFIERS, ctx -> ctx.register(ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(ID, "add_pigeon_spawn")),
+                        AddSpawnsBiomeModifier.singleSpawn(ctx.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_FOREST), new SpawnerData(ModRegistries.PIGEON.get(), 20, 1, 6)))), Set.of(ID)));
     }
 }

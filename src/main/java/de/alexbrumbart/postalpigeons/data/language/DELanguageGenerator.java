@@ -2,12 +2,12 @@ package de.alexbrumbart.postalpigeons.data.language;
 
 import de.alexbrumbart.postalpigeons.ModRegistries;
 import de.alexbrumbart.postalpigeons.PostalPigeons;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
 public class DELanguageGenerator extends LanguageProvider {
-    public DELanguageGenerator(DataGenerator generator) {
-        super(generator, PostalPigeons.ID, "de_de");
+    public DELanguageGenerator(PackOutput output) {
+        super(output, PostalPigeons.ID, "de_de");
     }
 
     @Override

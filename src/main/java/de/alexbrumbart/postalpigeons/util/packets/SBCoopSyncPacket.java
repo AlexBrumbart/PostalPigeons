@@ -2,7 +2,7 @@ package de.alexbrumbart.postalpigeons.util.packets;
 
 import de.alexbrumbart.postalpigeons.util.MailReceptorStorage;
 import de.alexbrumbart.postalpigeons.util.NetworkHandler;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
@@ -26,7 +26,7 @@ public class SBCoopSyncPacket {
 
     public SBCoopSyncPacket(FriendlyByteBuf buf) {
         this.clientVersion = buf.readLong();
-        this.dimension = buf.readResourceKey(Registry.DIMENSION_REGISTRY);
+        this.dimension = buf.readResourceKey(Registries.DIMENSION);
     }
 
     public void encode(FriendlyByteBuf buf) {

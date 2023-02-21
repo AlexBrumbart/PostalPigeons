@@ -31,12 +31,12 @@ public class MailReceptorNamingScreen extends Screen {
         final int y = height / 2;
 
         editBox = addRenderableWidget(new EditBox(Minecraft.getInstance().font, x - 200, y - 30, 400, 20, editBox, Component.empty()));
-        addRenderableWidget(new Button(x - 100, y + 10, 200, 20, buttonText, button -> {
+        addRenderableWidget(new Button.Builder(buttonText, button -> {
             if (!editBox.getValue().isBlank())
                 NetworkHandler.INSTANCE.sendToServer(new SBMailReceptorPacket(editBox.getValue(), pos));
 
             Minecraft.getInstance().setScreen(null);
-        }));
+        }).bounds(x - 100, y + 10, 200, 20).build());
 
         setInitialFocus(editBox);
     }

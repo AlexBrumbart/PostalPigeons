@@ -2,14 +2,14 @@ package de.alexbrumbart.postalpigeons.data;
 
 import de.alexbrumbart.postalpigeons.ModRegistries;
 import de.alexbrumbart.postalpigeons.PostalPigeons;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class BlockStateGenerator extends BlockStateProvider {
-    public BlockStateGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, PostalPigeons.ID, existingFileHelper);
+    public BlockStateGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
+        super(output, PostalPigeons.ID, existingFileHelper);
     }
 
     @Override
