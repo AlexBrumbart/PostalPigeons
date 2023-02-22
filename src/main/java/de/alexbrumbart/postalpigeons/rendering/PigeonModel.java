@@ -38,12 +38,12 @@ public class PigeonModel extends AgeableListModel<Pigeon> {
 
     @Override
     protected Iterable<ModelPart> headParts() {
-        return List.of(head, beak);
+        return List.of();
     }
 
     @Override
     protected Iterable<ModelPart> bodyParts() {
-        return List.of(torso, leftWing, rightWing, leftLeg, rightLeg);
+        return List.of(head, beak, torso, leftWing, rightWing, leftLeg, rightLeg);
     }
 
     @Override
